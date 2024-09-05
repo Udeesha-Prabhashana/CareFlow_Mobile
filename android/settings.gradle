@@ -1,0 +1,21 @@
+pluginManagement {
+    includeBuild("../node_modules/@react-native/gradle-plugin")
+}
+
+plugins {
+    id("com.facebook.react.settings")
+}
+
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+    ex.autolinkLibrariesFromCommand()
+}
+
+rootProject.name = 'CareFlow_Mobile'
+include ':app'
+
+// Include additional React Native libraries manually if needed
+include ':react-native-community_masked-view'
+project(':react-native-community_masked-view').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/masked-view/android')
+
+// Include the React Native Gradle Plugin (this is already included above)
+includeBuild('../node_modules/@react-native/gradle-plugin')
