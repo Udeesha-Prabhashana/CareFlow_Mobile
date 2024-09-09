@@ -1,59 +1,46 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const navigation = useNavigation();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = () => {
-    console.log(`Username: ${username}, Password: ${password}, Remember Me: ${rememberMe}`);
+    // Here you can add login logic (API request, validation, etc.)
+    // On successful login, navigate to the PatientHome screen
+    navigation.navigate('PatientHome');
   };
 
   return (
     <View style={styles.container}>
-
-      {/* Login Form Section */}
       <Text style={styles.title}>Login</Text>
 
       <TextInput
-        placeholder="Username/email"
-        value={username}
-        onChangeText={setUsername}
         style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
 
       <TextInput
+        style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        style={styles.input}
+        autoCapitalize="none"
       />
-
-      <View style={styles.rememberMeContainer}>
-        <TouchableOpacity onPress={() => setRememberMe(!rememberMe)}>
-          <View style={styles.checkbox}>
-            {rememberMe && (
-              <Image
-                source={require('../components/images/checkmark.png')} // Make sure you have this image
-                style={styles.checkmark}
-              />
-            )}
-          </View>
-        </TouchableOpacity>
-        <Text style={styles.rememberMeText}>Remember Me</Text>
-      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.linkButton}>
-        <Text style={styles.normalText}>Forgot password? </Text>
-        <TouchableOpacity onPress={() => {/* Handle password reset here */}}>
-          <Text style={styles.linkText}>Click here</Text>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text style={styles.linkText}>Don't have an account? Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -63,74 +50,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: 20,
     backgroundColor: '#fff',
   },
-
   title: {
-    fontSize: 30,
+    fontSize: 32,
     fontWeight: 'bold',
-    color: 'black',
-    marginBottom: 30,
+    color: '#855CDD',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   input: {
-    width: '100%',
     height: 50,
-    backgroundColor: '#f1f1f1',
+    borderColor: '#ddd',
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingHorizontal: 10,
     borderRadius: 10,
-    paddingHorizontal: 15,
-    marginVertical: 10,
     fontSize: 16,
   },
-  rememberMeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    borderColor: '#855CDD',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  checkmark: {
-    width: 10,
-    height: 13,
-  },
-  rememberMeText: {
-    fontSize: 14,
-    color: '#666',
-  },
   button: {
-    width: '100%',
-    height: 50,
     backgroundColor: '#855CDD',
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingVertical: 15,
     borderRadius: 10,
-    marginVertical: 10,
+    alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: 'bold',
-  },
-  linkButton: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  normalText: {
-    color: 'black',
-    fontSize: 16,
   },
   linkText: {
     color: '#855CDD',
     fontSize: 16,
-    fontWeight: 'bold',
+    marginTop: 20,
+    textAlign: 'center',
   },
 });
 

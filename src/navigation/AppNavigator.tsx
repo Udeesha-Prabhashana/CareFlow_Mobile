@@ -1,15 +1,24 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Hook for navigation
+import { useNavigation } from '@react-navigation/native';
+
 import HomeScreen from '../screens/HomeScreen';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
+
+import PatientHome from '../screens/Patient/PatientHome';
+
+import CuraHome from '../screens/Cura/CuraHome';
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Register: undefined;
+
+  PatientHome: undefined;
+
+  CuraHome: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -51,6 +60,11 @@ const AppNavigator = () => {
         name="Register"
         component={Register}
         options={headerOptions('Register')}
+      />
+      <Stack.Screen
+        name="PatientHome"
+        component={PatientHome}
+        options={headerOptions('PatientHome')}
       />
     </Stack.Navigator>
   );
