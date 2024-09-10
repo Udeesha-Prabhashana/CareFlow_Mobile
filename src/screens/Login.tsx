@@ -8,10 +8,13 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Here you can add login logic (API request, validation, etc.)
-    // On successful login, navigate to the PatientHome screen
-    navigation.navigate('PatientHome');
+    // Reset the navigation stack and navigate to PatientHome inside DrawerStack
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'DrawerStack', params: { screen: 'PatientHome' } }],
+    });
   };
+
 
   return (
     <View style={styles.container}>

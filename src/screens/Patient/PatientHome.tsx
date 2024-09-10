@@ -73,12 +73,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mainTopic: {
-    fontSize: 25,
+    fontSize: 27,
     fontWeight: '500',
     marginBottom: 8,
   },
   subTopic: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '300',
     marginBottom: 16,
   },
@@ -121,6 +121,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 10,
+    width: 150,
+    alignSelf: 'left',
   },
   imageContainer: {
     flex: 1,
