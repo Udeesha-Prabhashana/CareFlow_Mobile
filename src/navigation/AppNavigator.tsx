@@ -9,11 +9,13 @@ import Login from '../screens/Login';
 import Register from '../screens/Register';
 
 import PatientHome from '../screens/Patient/PatientHome';
+
 import Booking1 from '../screens/Patient/Booking/Booking1';
 import Booking2 from '../screens/Patient/Booking/Booking2';
 import Booking3 from '../screens/Patient/Booking/Booking3';
 
-import Appointments from '../screens/Patient/Appointments';
+import Appointments1 from '../screens/Patient/Appointment/Appointments1';
+
 import Doctors from '../screens/Patient/Doctors';
 import Main from '../screens/Patient/Main';
 import CuraHome from '../screens/Cura/CuraHome';
@@ -29,7 +31,7 @@ function CustomDrawerContent(props) {
   const drawerItems = [
     { label: 'Home', route: 'PatientHome' },
     { label: 'New Booking', route: 'Booking1' },
-    { label: 'Appointments', route: 'Appointments' },
+    { label: 'Appointments', route: 'Appointments1' },
     { label: 'Doctors', route: 'Doctors' },
     { label: 'Chat with Cura', route: 'CuraHome' },
   ];
@@ -150,9 +152,9 @@ function MainStackNavigator() {
         options={headerOptions('Booking 3')}
       />
       <Stack.Screen
-        name="Appointments"
-        component={Appointments}
-        options={headerOptions('Appointments')}
+        name="Appointments1"
+        component={Appointments1}
+        options={headerOptions('Appointments1')}
       />
       <Stack.Screen
         name="Doctors"

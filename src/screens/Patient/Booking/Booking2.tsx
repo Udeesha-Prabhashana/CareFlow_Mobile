@@ -1,5 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, FlatList, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 interface Doctor {
   _id: string;
@@ -18,7 +28,9 @@ const dummyData: Doctor[] = [
     name: "Dr. Ajith Kumara",
     address: "123 Sunshine St, Kottawa",
     city: "Kottawa",
-    photo: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4MRNQQfqm_G3F-AQ17YCJiTqnd-fCHKrsO_vqDM7KjwPAvM2IOs5ctb7k77wAhW11gmE&usqp=CAU"],
+    photo: [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4MRNQQfqm_G3F-AQ17YCJiTqnd-fCHKrsO_vqDM7KjwPAvM2IOs5ctb7k77wAhW11gmE&usqp=CAU",
+    ],
     title: "Expert General Practitioner",
     desc: "Dr. Ajith Perera has over 20 years of experience in general medicine. He is known for his compassionate care and comprehensive approach to patient health.",
     featured: true,
@@ -35,36 +47,75 @@ const dummyData: Doctor[] = [
     desc: "Dr. Sampath Samarasinghe specializes in cardiology with a focus on preventive care and advanced treatments.",
     featured: false,
   },
-  // ... more data
+  {
+    _id: "3",
+    name: "Dr. Nimal Jayasinghe",
+    address: "789 Ocean Ave, Colombo",
+    city: "Colombo",
+    photo: [
+      "https://t4.ftcdn.net/jpg/02/60/04/09/360_F_260040900_oO6YW1sHTnKxby4GcjCvtypUCWjnQRg5.jpg",
+    ],
+    title: "Pediatric Specialist",
+    desc: "Dr. Nimal Jayasinghe is a dedicated pediatrician with a passion for children's health and development. He provides expert care in a friendly and welcoming environment.",
+    featured: true,
+  },
+  {
+    _id: "4",
+    name: "Dr. Malini Fernando",
+    address: "321 Garden St, Kandy",
+    city: "Kandy",
+    photo: [
+      "https://t4.ftcdn.net/jpg/02/60/04/09/360_F_260040900_oO6YW1sHTnKxby4GcjCvtypUCWjnQRg5.jpg",
+    ],
+    title: "Leading Dermatologist",
+    desc: "Dr. Malini Fernando offers comprehensive dermatological care, including treatment for skin conditions and cosmetic procedures. She is known for her precision and patient care.",
+    featured: false,
+  },
+  {
+    _id: "5",
+    name: "Dr. Sanjay Perera",
+    address: "654 City St, Galle",
+    city: "Galle",
+    photo: [
+      "https://t4.ftcdn.net/jpg/02/60/04/09/360_F_260040900_oO6YW1sHTnKxby4GcjCvtypUCWjnQRg5.jpg",
+    ],
+    title: "Orthopedic Surgeon",
+    desc: "Dr. Sanjay Perera is an experienced orthopedic surgeon specializing in joint replacements and sports injuries. He is committed to providing personalized and effective treatment.",
+    featured: true,
+  },
 ];
 
 const Booking1: React.FC = () => {
-  const [destination, setDestination] = useState("");
+  const [doctorName, setDoctorName] = useState("");
+  const [specialty, setSpecialty] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
 
+  const navigation = useNavigation();
+
   const handleSearch = () => {
-    console.log("Search clicked");
+    console.log("Search clicked", { doctorName, specialty, date });
     // Add functionality to re-fetch or filter doctors
   };
 
   return (
     <View style={styles.container}>
-      {/* }<Text style={styles.title}>Doctors</Text>*/}
-      <Text style={styles.subtitle}>Find the Doctor that best matches with patients' requirements</Text>
+      <Text style={styles.subtitle}>
+        Find the Doctor that best matches your requirements
+      </Text>
 
       {/* Search fields */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
           placeholder="Enter Doctor Name"
-          value={destination}
-          onChangeText={setDestination}
+          value={doctorName}
+          onChangeText={setDoctorName}
         />
         <TextInput
           style={styles.input}
           placeholder="Select Specialty"
-          value={destination}
-          onChangeText={setDestination}
+          value={specialty}
+          onChangeText={setSpecialty}
         />
         <TextInput
           style={styles.input}
@@ -80,15 +131,21 @@ const Booking1: React.FC = () => {
         data={dummyData}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <View style={styles.doctorCard}>
-            <Image source={{ uri: item.photo[0] }} style={styles.image} />
-            <View style={styles.infoContainer}>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.desc}>{item.desc}</Text>
-              <Text style={styles.address}>{item.address}, {item.city}</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Booking3", { doctor: item })}
+          >
+            <View style={styles.doctorCard}>
+              <Image source={{ uri: item.photo[0] }} style={styles.image} />
+              <View style={styles.infoContainer}>
+                <Text style={styles.name}>{item.name}</Text>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.desc}>{item.desc}</Text>
+                <Text style={styles.address}>
+                  {item.address}, {item.city}
+                </Text>
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -98,26 +155,20 @@ const Booking1: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20, // Increased padding for better spacing
-    backgroundColor: "#fff", // Lighter background to match the screenshot's aesthetic
-  },
-  title: {
-    fontSize: 40,
-    fontWeight: "bold",
-    color: 'black',
-    marginBottom: 8,
+    padding: 20,
+    backgroundColor: "#fff",
   },
   subtitle: {
     fontSize: 16,
-    color: "#22223b", // Dark color for text
+    color: "#22223b",
     marginBottom: 16,
   },
   searchContainer: {
     marginBottom: 16,
-    backgroundColor: "#ffffff", // White background for the search area
+    backgroundColor: "#ffffff",
     borderRadius: 8,
-    padding: 10, // Padding inside the search container
-    shadowColor: "#000", // Adding shadow for elevation effect
+    padding: 10,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
@@ -125,23 +176,23 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#c9c9c9", // Lighter border color
+    borderColor: "#c9c9c9",
     padding: 12,
     marginTop: 10,
-    marginBottom: 10, // Adjust margin for better spacing
+    marginBottom: 10,
     borderRadius: 8,
-    fontSize: 16, // Larger font size for better readability
-    backgroundColor: "#fff", // White background for inputs
+    fontSize: 16,
+    backgroundColor: "#fff",
   },
   doctorCard: {
     flexDirection: "row",
     padding: 16,
-    backgroundColor: "#ffffff", // White background for cards
+    backgroundColor: "#ffffff",
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 8,
     marginBottom: 16,
-    shadowColor: "#000", // Shadow for cards
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
@@ -174,6 +225,5 @@ const styles = StyleSheet.create({
     color: "#888",
   },
 });
-
 
 export default Booking1;
