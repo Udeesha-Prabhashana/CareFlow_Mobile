@@ -132,7 +132,7 @@ const Booking1: React.FC = () => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("Booking3", { doctor: item })}
+            onPress={() => navigation.navigate("Booking3", { item: item })} // Pass the doctor as 'item'
           >
             <View style={styles.doctorCard}>
               <Image source={{ uri: item.photo[0] }} style={styles.image} />
@@ -146,6 +146,7 @@ const Booking1: React.FC = () => {
               </View>
             </View>
           </TouchableOpacity>
+
         )}
       />
     </View>

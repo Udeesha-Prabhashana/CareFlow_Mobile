@@ -15,6 +15,7 @@ import Booking2 from '../screens/Patient/Booking/Booking2';
 import Booking3 from '../screens/Patient/Booking/Booking3';
 
 import Appointments1 from '../screens/Patient/Appointment/Appointments1';
+import ViewDetails from '../screens/Patient/Appointment/ViewDetails';
 
 import Doctors from '../screens/Patient/Doctors';
 import Main from '../screens/Patient/Main';
@@ -156,6 +157,12 @@ function MainStackNavigator() {
         component={Appointments1}
         options={headerOptions('Appointments1')}
       />
+       <Stack.Screen
+         name="ViewDetails"
+         component={Appointments1}
+         options={headerOptions('ViewDetails')}
+        />
+
       <Stack.Screen
         name="Doctors"
         component={Doctors}

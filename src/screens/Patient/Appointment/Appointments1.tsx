@@ -21,7 +21,7 @@ interface Appointment {
 }
 
 const Appointments1: React.FC = () => {
-  const [alignment, setAlignment] = useState<string>("upcoming");
+  const [alignment, setAlignment] = useState<string>("upcoming"); 
   const [doctorNameFilter, setDoctorNameFilter] = useState<string>("");
 
   // Mock data
@@ -99,13 +99,21 @@ const Appointments1: React.FC = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          alert(item.paid ? "View Details" : "Pay Now");
+          if (alignment === "upcoming" && !item.paid) {
+            alert("Pay Now");
+          } else {
+            navigation.navigate('BookingSummary', { details: item });
+          }
         }}
       >
-        <Text style={styles.buttonText}>{item.paid ? "View Details" : "Pay Now"}</Text>
+        <Text style={styles.buttonText}>
+          {alignment === "upcoming" ? (item.paid ? "View Details" : "Pay Now") : "View Details"}
+        </Text>
       </TouchableOpacity>
     </Card>
   );
+
+
 
   return (
     <ScrollView style={styles.container}>

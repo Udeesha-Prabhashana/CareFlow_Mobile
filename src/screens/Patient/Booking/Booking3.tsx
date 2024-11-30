@@ -5,10 +5,10 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Picker,
   ScrollView,
   Alert,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import moment from "moment";
 
@@ -78,20 +78,8 @@ const Booking3: React.FC = () => {
   };
 
   const handleClick = () => {
-    if (selectedDate && item) {
-      const availableAppointments = item.availability.find(
-        (slot) => slot.availableDate === selectedDate
-      )?.bookedSlots || 0;
-
-      const data = {
-        doctor: item,
-        selectedDate,
-        time: suggestTime,
-        availableAppointments: availableAppointments + 1 || 0,
-        // Add patient details here if necessary
-      };
-
-      navigation.navigate("BookingSummaryPay", { state: data });
+    if (selectedDate) {
+      navigation.navigate("BookingSummaryPay", { state: { selectedDate, suggestTime } });
     } else {
       Alert.alert("Please select a date.");
     }
@@ -105,9 +93,6 @@ const Booking3: React.FC = () => {
     );
   }
 
-  const availableAppointments =
-    item.availability.find((slot) => slot.availableDate === selectedDate)?.bookedSlots || 0;
-
   return (
     <ScrollView style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
@@ -120,7 +105,7 @@ const Booking3: React.FC = () => {
         <Text style={styles.doctorName}>{item.name}</Text>
         <Text style={styles.description}>{item.description}</Text>
         <Text style={styles.label}>Speciality:</Text>
-        <Text style={styles.value}>{item.specialization}</Text>
+        <Text style={styles.value}>{item.specialization || "N/A"}</Text>
       </View>
       <View style={styles.availabilityContainer}>
         <Text style={styles.label}>Select Date:</Text>
@@ -140,15 +125,13 @@ const Booking3: React.FC = () => {
         </Picker>
         {selectedDate ? (
           <View>
-            <Text style={styles.label}>Available Appointment Number:</Text>
-            <Text style={styles.value}>{availableAppointments + 1}</Text>
-            <Text style={styles.label}>Arrival Time Based on Your Booking:</Text>
-            <Text style={styles.value}>{suggestTime}</Text>
+            <Text style={styles.label}>Arrival Time:</Text>
+            <Text style={styles.value}>{suggestTime || "Calculating..."}</Text>
           </View>
         ) : null}
       </View>
       <TouchableOpacity onPress={handleClick} style={styles.bookButton}>
-        <Text style={styles.bookButtonText}>Book Doctor</Text>
+        <Text style={styles.bookButtonText}>Book Appointment</Text>
       </TouchableOpacity>
     </ScrollView>
   );
