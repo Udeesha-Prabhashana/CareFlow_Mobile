@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Card } from "react-native-paper";
-import { Picker } from "@react-native-picker/picker"; // For filtering
+import { Picker } from "@react-native-picker/picker";
 
 interface Appointment {
   title?: string;
@@ -20,11 +20,10 @@ interface Appointment {
   doctorName?: string;
 }
 
-const Appointments1: React.FC = () => {
+const Appointments1 = ({ navigation }: any) => { // Add navigation prop
   const [alignment, setAlignment] = useState<string>("upcoming");
   const [doctorNameFilter, setDoctorNameFilter] = useState<string>("");
 
-  // Mock data
   const mockAppointments = {
     upcoming: [
       {
@@ -34,6 +33,8 @@ const Appointments1: React.FC = () => {
         date: "2024-11-27",
         paid: false,
         doctorName: "Smith",
+        charges: "50 USD",
+        time: "10:00 AM",
       },
       {
         title: "No. 2",
@@ -42,6 +43,8 @@ const Appointments1: React.FC = () => {
         date: "2024-11-28",
         paid: true,
         doctorName: "Taylor",
+        charges: "70 USD",
+        time: "11:30 AM",
       },
     ],
     completed: [
@@ -50,6 +53,8 @@ const Appointments1: React.FC = () => {
         body: "Eye checkup",
         date: "2024-11-25",
         doctorName: "Lee",
+        charges: "60 USD",
+        time: "09:00 AM",
       },
     ],
     missed: [
@@ -58,6 +63,8 @@ const Appointments1: React.FC = () => {
         body: "Follow-up",
         date: "2024-11-26",
         doctorName: "Brown",
+        charges: "40 USD",
+        time: "02:00 PM",
       },
     ],
   };
@@ -78,7 +85,6 @@ const Appointments1: React.FC = () => {
         break;
     }
 
-    // Apply doctor name filter
     if (doctorNameFilter) {
       appointments = appointments.filter((item) =>
         item.doctorName?.toLowerCase().includes(doctorNameFilter.toLowerCase())
@@ -99,21 +105,24 @@ const Appointments1: React.FC = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          alert(item.paid ? "View Details" : "Pay Now");
+          navigation.navigate("BookingSummary", {
+            appointment: item,
+            showPaymentButton: alignment === "upcoming" && !item.paid,
+          });
         }}
       >
-        <Text style={styles.buttonText}>{item.paid ? "View Details" : "Pay Now"}</Text>
+        <Text style={styles.buttonText}>
+          {alignment === "upcoming" ? (item.paid ? "View Details" : "Pay Now") : "View Details"}
+        </Text>
       </TouchableOpacity>
     </Card>
   );
 
   return (
     <ScrollView style={styles.container}>
-      {/* Header */}
       <Text style={styles.headerTitle}>View Appointments</Text>
       <Text style={styles.headerSubtitle}>Details of your Appointments</Text>
 
-      {/* Filter */}
       <View style={styles.filterContainer}>
         <Picker
           selectedValue={alignment}
@@ -124,7 +133,6 @@ const Appointments1: React.FC = () => {
           <Picker.Item label="Completed" value="completed" />
           <Picker.Item label="Missed" value="missed" />
         </Picker>
-
         <TextInput
           style={styles.input}
           placeholder="Filter by Doctor's Name"
@@ -133,7 +141,6 @@ const Appointments1: React.FC = () => {
         />
       </View>
 
-      {/* Appointment List */}
       <FlatList
         data={filteredAppointments()}
         renderItem={renderAppointment}

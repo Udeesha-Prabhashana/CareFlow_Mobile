@@ -10,6 +10,9 @@ import Register from '../screens/Register';
 
 import PatientHome from '../screens/Patient/PatientHome';
 
+import BookingSummary from '../screens/Patient/BookingSummary';
+
+
 import Booking1 from '../screens/Patient/Booking/Booking1';
 import Booking2 from '../screens/Patient/Booking/Booking2';
 import Booking3 from '../screens/Patient/Booking/Booking3';
@@ -136,6 +139,9 @@ function MainStackNavigator() {
         component={PatientHome}
         options={headerOptions('Patient Home')}
       />
+
+
+
       <Stack.Screen
         name="Booking1"
         component={Booking1}
@@ -161,6 +167,12 @@ function MainStackNavigator() {
         component={Doctors}
         options={headerOptions('Doctors')}
       />
+
+      <Stack.Screen
+              name="BookingSummary"
+              component={BookingSummary}
+              options={headerOptions('BookingSummary')}
+            />
       <Stack.Screen
         name="CuraHome"
         component={CuraHome}
