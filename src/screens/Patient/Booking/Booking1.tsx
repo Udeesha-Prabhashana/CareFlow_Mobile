@@ -1,17 +1,48 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
+import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
 const Booking1 = () => {
   const [doctorName, setDoctorName] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [date, setDate] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
 
-  const handleSearch = () => {
-    console.log("Searching doctors...");
-    navigation.navigate('Booking2');
+  const handleSearch = async () => {
+    if (!doctorName && !specialty && !date) {
+      Alert.alert('Validation', 'Please fill at least one field to search.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post('https://your-api.com/api/search-doctors', {
+        doctorName,
+        specialty,
+        date,
+      });
+
+      setIsLoading(false);
+
+      // Navigate to the results page with the API response
+      navigation.navigate('BookingResults', { doctors: response.data });
+    } catch (error) {
+      setIsLoading(false);
+      Alert.alert('Error', 'Unable to fetch doctor data. Please try again.');
+      console.error('Search error:', error);
+    }
   };
 
   const handleClear = () => {
@@ -41,21 +72,22 @@ const Booking1 = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Date"
+        placeholder="Date (YYYY-MM-DD)"
         value={date}
         onChangeText={setDate}
       />
 
       <View style={styles.buttonContainerRow}>
-        <TouchableOpacity style={styles.buttonSearch} onPress={handleSearch}>
-          <Text style={styles.buttonTextSearch}>Search Doctors</Text>
+        <TouchableOpacity style={styles.buttonSearch} onPress={handleSearch} disabled={isLoading}>
+          <Text style={styles.buttonTextSearch}>
+            {isLoading ? 'Searching...' : 'Search Doctors'}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonClear} onPress={handleClear}>
           <Text style={styles.buttonTextClear}>Clear</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Add the new section here */}
       <View style={styles.space} />
 
       <View style={styles.infoImageContainer}>
@@ -153,7 +185,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   space: {
-    height: 30, // Adds space between elements
+    height: 30,
   },
   buttonContainer: {
     width: 150,
@@ -169,14 +201,14 @@ const styles = StyleSheet.create({
     color: '#555',
   },
   buttonAskCura: {
-    backgroundColor: '#855CDD', // Same color as Search Doctors button
-    paddingVertical: 8,         // Reduced padding for height
-    paddingHorizontal: 12,      // Reduced padding for width
+    backgroundColor: '#855CDD',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: 10,
     alignItems: 'center',
   },
   buttonTextAskCura: {
-    color: '#fff', // Same text color as Search Doctors button
+    color: '#fff',
     fontSize: 16,
   },
 });
