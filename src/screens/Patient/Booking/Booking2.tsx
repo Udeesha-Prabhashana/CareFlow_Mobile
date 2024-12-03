@@ -1,14 +1,5 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  FlatList,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import React from "react";
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 interface Doctor {
@@ -86,45 +77,11 @@ const dummyData: Doctor[] = [
 ];
 
 const Booking1: React.FC = () => {
-  const [doctorName, setDoctorName] = useState("");
-  const [specialty, setSpecialty] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-
   const navigation = useNavigation();
-
-  const handleSearch = () => {
-    console.log("Search clicked", { doctorName, specialty, date });
-    // Add functionality to re-fetch or filter doctors
-  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.subtitle}>
-        Find the Doctor that best matches your requirements
-      </Text>
-
-      {/* Search fields */}
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Doctor Name"
-          value={doctorName}
-          onChangeText={setDoctorName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Select Specialty"
-          value={specialty}
-          onChangeText={setSpecialty}
-        />
-        <TextInput
-          style={styles.input}
-          value={date}
-          onChangeText={setDate}
-          placeholder="Select Date"
-        />
-        <Button title="Apply Filters" onPress={handleSearch} color="#855CDD" />
-      </View>
+      <Text style={styles.subtitle}>Find the Doctor that best matches your requirements</Text>
 
       {/* List of doctors */}
       <FlatList
@@ -162,27 +119,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#22223b",
     marginBottom: 16,
-  },
-  searchContainer: {
-    marginBottom: 16,
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    padding: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 5,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#c9c9c9",
-    padding: 12,
-    marginTop: 10,
-    marginBottom: 10,
-    borderRadius: 8,
-    fontSize: 16,
-    backgroundColor: "#fff",
   },
   doctorCard: {
     flexDirection: "row",
