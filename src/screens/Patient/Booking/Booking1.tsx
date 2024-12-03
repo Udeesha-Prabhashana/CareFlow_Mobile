@@ -20,15 +20,18 @@ const Booking1 = () => {
   const navigation = useNavigation();
 
   const handleSearch = async () => {
+    // Check if all fields are empty
     if (!doctorName && !specialty && !date) {
-      Alert.alert('Validation', 'Please fill at least one field to search.');
+      // Navigate to Booking2 page when no input is provided
+      navigation.navigate('Booking2');
       return;
     }
 
+    // If any field is filled, proceed with the search
     setIsLoading(true);
 
     try {
-      const response = await axios.post('https://your-api.com/api/search-doctors', {
+      const response = await axios.post('http://10.0.2.2:8080/api/getAllFilteredDoctors', {
         doctorName,
         specialty,
         date,
@@ -44,6 +47,9 @@ const Booking1 = () => {
       console.error('Search error:', error);
     }
   };
+
+
+
 
   const handleClear = () => {
     setDoctorName('');
